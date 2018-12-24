@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const Users = require('../models/users')
 
 router.get('/', ( req, res, next ) => {
 
@@ -25,11 +26,33 @@ router.get('/:userId', ( req, res, next ) => {
 
 router.post('/', ( req, res, next ) => {
 
-  res.status(200).json({
-
-    message : 'POST users'
-
+  const user = new Users({
+    name : 'zaebok'
   })
+
+  user.save()
+    .then( result => {
+
+      if( !result || result.length === 0 ){
+
+        return res.status(500).json(result)
+
+      }else{
+
+        res.status(200).json({
+
+          message : 'POST user'
+
+        })
+
+      }
+
+    })
+    .catch( error => {
+
+      res.status(500).json(error)
+
+    })
 
 })
 
